@@ -307,7 +307,7 @@
             color: var(--white);
         }
         
-        @media (max-width: 992px) {
+        @media (max-width: 992px) and (min-width: 769px) {
             .sidebar {
                 width: 80px;
                 text-align: center;
@@ -344,7 +344,6 @@
                 min-width: 40px !important;
                 min-height: 40px !important;
                 flex-shrink: 0;
-                /* Ensure avatar is visible */
                 display: flex !important;
             }
 
@@ -373,6 +372,118 @@
             .main-iframe {
                 margin-left: 80px;
                 width: calc(100vw - 80px);
+            }
+        }
+
+        /* Mobile Top Navbar & Backdrop */
+        .mobile-navbar {
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            padding: 8px 16px;
+            min-height: 56px;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 1040;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Mobile Devices (<= 768px) */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 280px !important;
+                height: 100vh !important;
+                z-index: 1050 !important;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                box-shadow: 15px 0 35px rgba(0, 0, 0, 0.15) !important;
+                border-right: none !important;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0) !important;
+            }
+
+            .sidebar.mobile-open .logo-text {
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-link span {
+                display: inline-block !important;
+            }
+
+            .sidebar.mobile-open .sidebar-user-info {
+                display: block !important;
+            }
+
+            .sidebar.mobile-open .nav-link .chevron {
+                display: inline-block !important;
+            }
+
+            .sidebar.mobile-open .nav-link {
+                text-align: left !important;
+                justify-content: flex-start !important;
+                padding: 12px 18px !important;
+                margin: 4px 10px !important;
+            }
+
+            .sidebar.mobile-open .nav-link i {
+                margin-right: 12px !important;
+                font-size: 1.1rem !important;
+            }
+
+            .sidebar.mobile-open .user-avatar {
+                margin-right: 12px !important;
+            }
+
+            .sidebar.mobile-open .dropdown-menu.show {
+                position: absolute !important;
+                left: 0 !important;
+                top: auto !important;
+                bottom: 100% !important;
+                margin-bottom: 8px !important;
+                width: 100% !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+                padding: 16px 12px !important;
+                min-height: calc(100vh - 56px);
+            }
+
+            .main-iframe {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            .table-responsive {
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .modal-dialog {
+                margin: 0.5rem;
             }
         }
     </style>
@@ -408,9 +519,48 @@
         </div>
     </div>
 
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     @include('components.sidebar')
     
-    <!-- Everything else is one big iframe -->
+    <!-- Mobile Navigation Bar -->
+    <header class="mobile-navbar d-md-none d-flex align-items-center justify-content-between shadow-sm">
+        <button type="button" class="btn btn-light border-0 p-1 me-2" id="mobileSidebarToggle" aria-label="Toggle Navigation">
+            <i class="bi bi-list fs-2" style="color: var(--congress-blue);"></i>
+        </button>
+        <div class="d-flex align-items-center">
+            <img src="{{ asset('images/atin_logo.png') }}" alt="Company Logo" style="max-height: 32px;" class="me-2">
+            <span class="fw-bold fs-5" style="color: var(--congress-blue); letter-spacing: -0.5px;">ATIN</span>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="user-avatar" style="width: 34px; height: 34px; font-size: 14px; border-width: 2px;">
+                    {{ strtoupper(substr(session('user_name', 'U'), 0, 1)) }}
+                </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+                <li class="px-3 py-2 border-bottom">
+                    <div class="fw-bold small text-truncate" style="max-width: 180px;">{{ session('user_name') }}</div>
+                    <div class="text-muted smaller" style="font-size: 0.75rem;">{{ session('user_role') }}</div>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ route('account.settings') }}">
+                        <i class="bi bi-gear me-2"></i>Settings
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form action="/logout" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </header>
+
     <main class="main-content">
         @yield('content')
     </main>
@@ -633,6 +783,50 @@
                         container.style.pointerEvents = 'auto';
                     });
                 }
+            });
+
+            // Mobile Sidebar Drawer Toggle
+            const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            const sidebarMobileClose = document.getElementById('sidebarMobileClose');
+
+            function openMobileSidebar() {
+                if (sidebar) {
+                    sidebar.classList.add('mobile-open');
+                }
+                if (sidebarBackdrop) {
+                    sidebarBackdrop.classList.add('show');
+                }
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileSidebar() {
+                if (sidebar) {
+                    sidebar.classList.remove('mobile-open');
+                }
+                if (sidebarBackdrop) {
+                    sidebarBackdrop.classList.remove('show');
+                }
+                document.body.style.overflow = '';
+            }
+
+            if (mobileSidebarToggle) {
+                mobileSidebarToggle.addEventListener('click', openMobileSidebar);
+            }
+            if (sidebarBackdrop) {
+                sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+            }
+            if (sidebarMobileClose) {
+                sidebarMobileClose.addEventListener('click', closeMobileSidebar);
+            }
+
+            // Close mobile sidebar on link click
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768 && !this.getAttribute('data-bs-toggle')) {
+                        closeMobileSidebar();
+                    }
+                });
             });
         });
     </script>

@@ -3,10 +3,10 @@
 @section('title', 'ATIN Admin - Dashboard')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <h2 class="fw-bold mb-0" style="color: var(--congress-blue); letter-spacing: -0.5px;">Dashboard</h2>
-    <div class="d-flex align-items-center">
-        <div class="dropdown me-2">
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <div class="dropdown">
             <button class="btn btn-white shadow-sm border-0 dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" style="border-radius: 10px; font-weight: 500;">
                 <i class="bi bi-calendar3 me-2 text-primary"></i> 
                 <span id="currentFilterLabel" class="text-secondary">
@@ -588,6 +588,50 @@
         font-weight: 500;
         padding: 0.5em 0.8em;
         border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+        .card-header {
+            padding: 14px 16px;
+            font-size: 1rem;
+            flex-wrap: wrap !important;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .chart-container {
+            height: 240px !important;
+        }
+
+        .table thead th,
+        .table tbody td {
+            padding: 10px 12px;
+            white-space: nowrap;
+        }
+
+        .metric-card .card-body {
+            padding: 16px !important;
+        }
+
+        .metric-card h3 {
+            font-size: 1.5rem !important;
+        }
+
+        #salesChartType {
+            width: 100%;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        #salesChartType .btn {
+            flex: 1;
+            padding: 4px 6px;
+            font-size: 0.75rem;
+        }
     }
 </style>
 @endpush

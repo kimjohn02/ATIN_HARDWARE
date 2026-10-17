@@ -9,13 +9,13 @@
     <style>
         body {
             background: #f8f9fa;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 16px;
         }
         
         :root {

@@ -12,6 +12,7 @@
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn-close d-md-none sidebar-mobile-close" id="sidebarMobileClose" aria-label="Close"></button>
             </div>
         </div>
         

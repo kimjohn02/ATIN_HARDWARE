@@ -284,6 +284,86 @@
     background-color: #e9ecef !important;  /* Slightly darker gray for hover */
     color: #212529 !important;
 }
+
+/* Mobile Responsive Enhancements for POS */
+@media (max-width: 992px) {
+    .pos-container {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        padding: 4px !important;
+        min-height: auto !important;
+    }
+
+    .items-section {
+        padding: 16px !important;
+        border-radius: 12px !important;
+    }
+
+    .summary-section {
+        position: static !important;
+        top: 0 !important;
+        padding: 16px !important;
+        border-radius: 12px !important;
+        height: auto !important;
+    }
+
+    .search-input {
+        height: 50px !important;
+        font-size: 1rem !important;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 50px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 48px !important;
+        font-size: 16px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 48px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .select2-container--open .select2-dropdown {
+        min-width: 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        left: 0 !important;
+    }
+
+    .items-list {
+        max-height: 380px;
+        overflow-x: auto;
+    }
+
+    .header-row,
+    .item-row {
+        min-width: 440px;
+    }
+
+    .total-display {
+        font-size: 1.6rem !important;
+    }
+
+    .btn-pay {
+        padding: 12px !important;
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .payment-method .d-flex {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    .payment-method .form-check {
+        min-width: calc(33.33% - 6px);
+    }
+}
 </style>
 @endpush
 
